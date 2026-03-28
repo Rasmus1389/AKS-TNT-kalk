@@ -1,14 +1,18 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Roche hs‑TnT – ESC 0/1h/2h + UDMI</title>
+  <title>Roche hs‑TnT – ESC 0/1h/2h + UDMI beta</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
     body {
       font-family: system-ui, sans-serif;
-        background-color: rgb(90, 120, 80, 0.2);
+      background-color: rgb(90, 120, 80, 0.2);
       margin: 0;
       padding: 0;
       display: flex;
@@ -82,7 +86,7 @@
       margin-top: 1.4rem;
       width: 100%;
       padding: 0.7rem;
-      background:   light-gray;
+      background: lightgray;
       color: black;
       border: none;
       border-radius: 6px;
@@ -91,7 +95,7 @@
     }
 
     button:hover {
-        background-color: light-gray;
+      background-color: lightgray;
     }
 
     .result {
@@ -123,80 +127,159 @@
       font-weight: 600;
       color: #444;
     }
-  </style>
-<link rel="manifest" href="manifest.json">
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
-
+    
+    
+  .info-box {
+    background: #f2f2f2;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
   
+.primary {
+  background: #eef3ef;          /* cool, clinical grey‑green */
+  border-left: 4px solid #6b8f71; /* muted medical green */
+  padding: 8px;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.section-head {
+  margin-top: 1.2rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.78rem;      /* small, subtle */
+  font-weight: 600;
+  color: #4a4f4b;          /* cool grey‑green, clinical */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;   /* subtle spacing for a clean medical look */
+  border-bottom: 1px solid #d3d7d4; /* thin neutral divider */
+  padding-bottom: 2px;
+}
+
+/* ── Iskæmi toggle switch ── */
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+.switch-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 24px;
+  transition: 0.3s;
+}
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.switch input:checked + .slider { background-color: #6b8f71; }
+.switch input:checked + .slider:before { transform: translateX(20px); }
+
+</style>
+    
+  
+
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </head>
-
 <body>
+  <div class="container">
+    <h1>Roche hs‑TnT – ESC 0/1h/2h + UDMI (beta)</h1>
+    <p class="subtitle">
+      Biokemisk AKS (ACS guideline ESC 2023) og UDMI (2018,4th editon.) fremstilles sideordnet<br><br>
+      .-. .- ... -- ..- ... &#129339 .- .-.. -... .. -. .. ..- ... ... .-.
+    </p>
+    
+ 
+<h2 class="section-head">ESC‑AKS</h2>
+ <label class="primary">0 h hs‑TnT (ng/L) - Initiale lab. uanset tid for smertedebut 
+      <input type="number" id="t0" step="0.1">
+    </label>
 
-<div class="container">
-  <h1>Roche hs‑TnT – ESC 0/1h/2h + UDMI</h1>
+<label>1 h hs‑TnT (ng/L) eller
+  <input type="number" id="t1" step="0.1">
+</label>
 
-  <p class="subtitle">
-    Biokemisk (ACS guideline ESC 2023) og UDMI (2018,4th editon.) fremstilles<br><br> .-. .- ... -- ..- ...&#129339.- .-.. -... .. -. .. ..- ... ... .-. 
-  </p>
+<label class="primary">2 h hs‑TnT (ng/L) 
+  <input type="number" id="t2" step="0.1">
+</label>
 
-  <div class="section-title">Klinisk kontekst</div>
 
-  <div class="inline-row">
-    <div>
-       <label for="sex">Køn</label>
+
+    <label>3 h hs‑TnT (ng/L) - Obs.zone/hvis uafklaret
+      <input type="number" id="t3" step="0.1">
+    </label>
+    
+    <h2 class="section-head">UDMI</h2>
+
+<label class="primary">Køn (for UDMI 99th percentile)
       <select id="sex">
-        <option value="">Ikke angivet</option>
+        <option value="">-- vælg --</option>
         <option value="female">Kvinde</option>
         <option value="male">Mand</option>
       </select>
-    </div>
-  </div>
-
-  <div class="checkbox-row">
-    <input type="checkbox" id="ischemia">
-    <label for="ischemia" style="margin-top:0;font-weight:400;">
-      Symptomer eller tegn på pågående iskæmi
     </label>
-  </div>
+    
+    <label>99th percentile – Mand (ng/L)
+  <input type="number" id="p99_male" step="0.1" value="20">
+</label>
 
-  <div class="section-title">Troponin værdier (Roche hs‑TnT, ng/L)</div>
+<label>99th percentile – Kvinde (ng/L)
+  <input type="number" id="p99_female" step="0.1" value="11">
+</label>
 
-  <label>0 h hs‑TnT (ng/L)
-    <input type="number" id="t0" step="0.1">
-  </label>
 
-  <label>1 h hs‑TnT (ng/L, optional)
-    <input type="number" id="t1" step="0.1">
-  </label>
 
-  <label>2 h hs‑TnT (ng/L, optional)
-    <input type="number" id="t2" step="0.1">
-  </label>
+    <div class="switch-row">
+      <label class="switch">
+        <input type="checkbox" id="ischemia" checked>
+        <span class="slider"></span>
+      </label>
+      <span class="switch-label">Iskæmi til stede (klinisk/EKG/symptomer)</span>
+    </div>
 
-  <label>3 h hs‑TnT (ng/L, optional)
-    <input type="number" id="t3" step="0.1">
-  </label>
+    <button onclick="runAlgo()">Kør ESC + UDMI</button>
 
-  <button onclick="runAlgo()">Calculate</button>
+<div id="result" class="result observe" style="display:none;"></div>
 
-  <div id="output" class="result observe" style="display:none;"></div>
-
-  <div id="udmiNote" class="udmi-note">
-    <strong>UDMI delta criteria (rise/fall):</strong>
-    The Universal Definition of MI requires a <em>significant</em> rise and/or fall of troponin,
-    but does not define a single numeric delta threshold. The change should exceed analytical
-    and normal biological variation and be consistent with acute myocardial injury.
-    In this tool, significant change is operationalized as an
-    <strong>absolute change ≥ 5 ng/L</strong> or a
-    <strong>relative change ≥ 20%</strong>. These thresholds are commonly used to apply UDMI
-    in practice, but are not formally defined by UDMI itself.
-  </div>
+<div class="info-box">
+  <strong>Modellens ophav & referencer</strong><br>
+  <em>ESC ACS guidelines for rule in/out. Observationszonen-
+     3h-TNT, er med mindre evidens, obs.zonen eliminieres ved anvendelse af algoritmen: Open Heart 0/3‑h Validation
+Nestelberger T, Boeddinghaus J, Badertscher P, et al. Diagnostic performance of
+ the ESC 0/3‑hour algorithm in patients with suspected myocardial infarction. Open Heart. 2025;12:e003215. UDMI ud fra kønsspec. percantiler 20 og 11 Lokal-Roche5gen-TNT. Iskæmi vurderes klinisk via switch. </em>
 </div>
+</div> <!-- this closes your main container -->
+
 
 <script>
   function num(v) {
@@ -209,177 +292,204 @@ if ('serviceWorker' in navigator) {
     const t1 = num(document.getElementById('t1').value);
     const t2 = num(document.getElementById('t2').value);
     const t3 = num(document.getElementById('t3').value);
-
     const sex = document.getElementById('sex').value;
     const ischemiaPresent = document.getElementById('ischemia').checked;
 
-    const out = document.getElementById('output');
-    const udmiBox = document.getElementById('udmiNote');
+    const out = document.getElementById('result');
     out.style.display = 'block';
-    udmiBox.style.display = 'block';
     out.className = 'result observe';
-    let msg = [];
+
+    let lines = [];
 
     if (t0 == null) {
-      out.className = 'result observe';
-      out.textContent = 'Enter at least a 0 h hs‑TnT value.';
+      out.textContent = 'Angiv mindst en 0 h hs‑TnT værdi.';
       return;
     }
 
     function t0Category(v) {
-      if (v < 5)  return 'very low (<5 ng/L)';
-      if (v < 14) return 'low (5–14 ng/L)';
-      if (v < 52) return 'moderately elevated (14–51 ng/L)';
-      return 'high (≥52 ng/L)';
+      if (v < 5)  return 'meget lav (<5 ng/L)';
+      if (v < 14) return 'lav (5–14 ng/L)';
+      if (v < 52) return 'moderat forhøjet (14–51 ng/L)';
+      return 'høj (≥52 ng/L)';
     }
-    msg.push('0 h value: ' + t0.toFixed(1) + ' ng/L (' + t0Category(t0) + ').');
+
+    lines.push('0 h værdi: ' + t0.toFixed(1) + ' ng/L (' + t0Category(t0) + ').');
 
     let ruleOut = false;
     let ruleIn = false;
 
-    // Corrected: provisional rule-out ONLY if no later samples exist
+    // ESC single-sample rule-out
     if (t0 < 5 && t1 == null && t2 == null && t3 == null) {
       ruleOut = true;
-      msg.push('Provisional ESC rule‑out: 0 h <5 ng/L (single‑sample criterion, if onset>3h).');
+      lines.push('ESC rule‑out: 0 h <5 ng/L (single‑sample, hvis symptomdebut >3 timer).');
     }
 
-    // Immediate rule-in if 0h ≥52
+    // ESC rule-in at baseline
     if (t0 >= 52) {
       ruleIn = true;
-      msg.push('ESC rule‑in: 0 h ≥52 ng/L.');
+      ruleOut = false;   // FIX #1
+      lines.push('ESC rule‑in: 0 h ≥52 ng/L.');
     }
 
-    // 1-hour logic
+    // 0/1h pathway
     if (t1 != null) {
       const d01 = t1 - t0;
-      msg.push('1 h value: ' + t1.toFixed(1) + ' ng/L (Δ0–1 h = ' + d01.toFixed(1) + ' ng/L).');
+      lines.push('1 h værdi: ' + t1.toFixed(1) + ' ng/L (Δ0–1 h = ' + d01.toFixed(1) + ' ng/L).');
 
       if (t0 < 14 && d01 < 3) {
         ruleOut = true;
-        msg.push('ESC rule‑out by 0/1‑h: 0 h <14 ng/L and Δ0–1 h <3 ng/L.');
+        lines.push('ESC rule‑out 0/1‑h: 0 h <14 ng/L og Δ0–1 h <3 ng/L.');
       }
 
       if (t1 >= 52 || d01 >= 5) {
         ruleIn = true;
-        msg.push('ESC rule‑in by 0/1‑h: 1 h ≥52 ng/L or Δ0–1 h ≥5 ng/L.');
+        ruleOut = false;   // FIX #2
+        lines.push('ESC rule‑in 0/1‑h: 1 h ≥52 ng/L eller Δ0–1 h ≥5 ng/L.');
       }
     }
 
-    // 2-hour logic
+    // 0/2h pathway
     if (t2 != null) {
       const d02 = t2 - t0;
-      msg.push('2 h value: ' + t2.toFixed(1) + ' ng/L (Δ0–2 h = ' + d02.toFixed(1) + ' ng/L).');
+      lines.push('2 h værdi: ' + t2.toFixed(1) + ' ng/L (Δ0–2 h = ' + d02.toFixed(1) + ' ng/L).');
 
       if (t0 < 14 && d02 < 4) {
         ruleOut = true;
-        msg.push('ESC rule‑out by 0/2‑h: 0 h <14 ng/L and Δ0–2 h <4 ng/L.');
+        lines.push('ESC rule‑out 0/2‑h: 0 h <14 ng/L og Δ0–2 h <4 ng/L.');
       }
 
       if (t2 >= 52 || d02 >= 10) {
         ruleIn = true;
-        msg.push('ESC rule‑in by 0/2‑h: 2 h ≥52 ng/L or Δ0–2 h ≥10 ng/L.');
+        ruleOut = false;   // FIX #3
+        lines.push('ESC rule‑in 0/2‑h: 2 h ≥52 ng/L eller Δ0–2 h ≥10 ng/L.');
       }
     }
 
-    // 3-hour logic
-    if (t3 != null) {
-      const d03 = t3 - t0;
-      msg.push('3 h value: ' + t3.toFixed(1) + ' ng/L (Δ0–3 h = ' + d03.toFixed(1) + ' ng/L).');
+    // 3h fallback
+// ⭐ ESC 0/3‑h modified criteria ( Open Heart)
+if (t3 != null) {
+  const d03 = t3 - t0;
+  lines.push('3 h værdi: ' + t3.toFixed(1) + ' ng/L (Δ0–3 h = ' + d03.toFixed(1) + ' ng/L).');
 
-      if (t3 < 15 && d03 < 4) {
-        ruleOut = true;
-        msg.push('ESC rule‑out by 3‑h fallback: 3 h <15 ng/L and Δ0–3 h <4 ng/L.');
-      }
-    }
+  // RULE‑IN
+  if ((t0 <= 14 && d03 > 7) || (t0 > 14 && (d03 / t0) * 100 > 20)) {
+    ruleIn = true;
+    ruleOut = false;
+    lines.push('ESC 0/3‑h RULE‑IN: 0 h ≤14 & Δ>7 ng/L ELLER 0 h >14 & Δ>20%.');
+  }
+
+  // RULE‑OUT
+  else if ((t0 <= 14 && d03 <= 7) || (t0 > 14 && (d03 / t0) * 100 <= 20)) {
+    ruleOut = true;
+    lines.push('ESC 0/3‑h RULE‑OUT: 0 h ≤14 & Δ≤7 ng/L ELLER 0 h >14 & Δ≤20%.');
+  }
+
+  // Otherwise → OBSERVE (default)
+}
 
     // Final ESC classification
     let escClass = '';
     if (ruleIn) {
       out.className = 'result rulein';
-      escClass = 'RULE‑IN (invasive pathway)';
-      msg.push('<strong>ESC biochemical classification: ' + escClass + '.</strong>');
+      escClass = 'RULE‑IN (invasiv strategi)';
     } else if (ruleOut) {
       out.className = 'result ruleout';
       escClass = 'RULE‑OUT';
-      msg.push('<strong>ESC biochemical classification: ' + escClass + '.</strong>');
     } else {
       out.className = 'result observe';
       escClass = 'OBSERVE';
-      msg.push('<strong>ESC biochemical classification: ' + escClass + '.</strong>');
     }
 
-    // ---------------- UDMI LAYER ----------------
+    lines.push('<strong>ESC biokemisk klassifikation: ' + escClass + '.</strong>');
+    if (ruleIn && !ischemiaPresent) {
+      lines.push('<em>&#9888;&#65039; ESC rule&#8209;in foruds&#230;tter isk&#230;misk kontekst &#8211; overvej alternativ &#230;tiologi (myokardit, PE, sepsis m.fl.)</em>');
+    }
+    
+    
 
-    const values = [t0, t1, t2, t3].filter(v => v != null);
-    let udmiText = '';
+ // --------- UDMI ---------
+const values = [t0, t1, t2, t3].filter(v => v != null);
 
-    if (!sex) {
-      udmiText = '<strong>UDMI interpretation:</strong> Not computed – sex not specified (sex‑specific 99th percentile required).';
-    } else if (values.length === 0) {
-      udmiText = '<strong>UDMI interpretation:</strong> Not computed – no troponin values.';
-    } else {
-      const maxVal = Math.max.apply(null, values);
-      const minVal = Math.min.apply(null, values);
+if (!sex) {
+  lines.push('<strong>UDMI:</strong> Ikke beregnet – køn ikke angivet.');
+} else if (values.length === 0) {
+  lines.push('<strong>UDMI:</strong> Ikke beregnet – ingen troponinværdier.');
+} else {
 
-      const pct99 = (sex === 'male') ? 22 : 14;
-      const above99 = maxVal >= pct99;
+  const maxVal = Math.max(...values);
+  const minVal = Math.min(...values);
 
-      let dynamicChange = false;
-      let absDelta = 0;
-      let relDelta = 0;
+  // Read user-defined 99th percentiles
+  let p99_male = num(document.getElementById('p99_male').value);
+  let p99_female = num(document.getElementById('p99_female').value);
 
-      if (values.length >= 2) {
-        absDelta = maxVal - minVal;
-        relDelta = (minVal > 0) ? (absDelta / minVal) * 100 : 0;
+  // Fallback defaults
+  if (p99_male == null) p99_male = 20;
+  if (p99_female == null) p99_female = 11;
 
-        if (absDelta >= 5 || relDelta >= 20) {
-          dynamicChange = true;
-        }
+  const pct99 = (sex === 'male') ? p99_male : p99_female;
+  const above99 = maxVal >= pct99;
 
-        msg.push(
-          'UDMI delta assessment: Δ = ' + absDelta.toFixed(1) +
-          ' ng/L (' + relDelta.toFixed(1) +
-          '%). Significant change here is defined as absolute ≥5 ng/L OR relative ≥20% (operational UDMI criteria).'
+  let absDelta = 0;
+  let relDelta = 0;
+  let dynamicChange = false;
+
+  if (values.length >= 2) {
+
+    absDelta = maxVal - minVal;
+    relDelta = (minVal > 0) ? (absDelta / minVal) * 100 : 0;
+
+    // ⭐ HARD NOISE FLOOR — ALWAYS REQUIRE ≥5 ng/L
+    if (absDelta < 5) {
+      dynamicChange = false;
+      lines.push(
+        'UDMI Δ: ' + absDelta.toFixed(1) + ' ng/L (' +
+        relDelta.toFixed(1) + '%). <strong>Δ <5 ng/L → Ikke sign. (under biologisk og analytisk variation).</strong>'
+      );
+    }
+
+    // ⭐ If Δ ≥5 ng/L, now apply UDMI logic
+    else {
+
+      // Case A: Below 99th percentile → absolute delta only
+      if (!above99) {
+        dynamicChange = true;
+        lines.push(
+          'UDMI Δ: ' + absDelta.toFixed(1) + ' ng/L (' +
+          relDelta.toFixed(1) + '%). <strong>Signifikant ændring (Δ ≥5 ng/L).</strong>'
         );
-      } else {
-        msg.push('UDMI delta assessment: Only one value available – dynamic change cannot be assessed.');
       }
 
-      if (escClass === 'RULE‑OUT') {
-        udmiText = '<strong>UDMI interpretation:</strong> NSTEMI excluded (by ESC rule‑out; UDMI criteria not applied further).';
-      } else if (escClass === 'OBSERVE') {
-        udmiText =
-          '<strong>UDMI interpretation:</strong> UDMI NSTEMI criteria not met ' +
-          '(values remain below the sex‑specific 99th percentile: ' + pct99 + ' ng/L).';
-      } else {
-        if (above99 && dynamicChange && ischemiaPresent) {
-          udmiText =
-            '<strong>UDMI interpretation:</strong> NSTEMI criteria met ' +
-            '(rise/fall with value above the sex‑specific 99th percentile of ' + pct99 +
-            ' ng/L and ischemia present).';
-        } else if (above99 && dynamicChange && !ischemiaPresent) {
-          udmiText =
-            '<strong>UDMI interpretation:</strong> Acute myocardial injury ' +
-            '(rise/fall with value above the sex‑specific 99th percentile of ' + pct99 +
-            ' ng/L, but no ischemia reported).';
-        } else {
-          udmiText =
-            '<strong>UDMI interpretation:</strong> UDMI NSTEMI criteria not met ' +
-            '(ESC rule‑in pattern, but UDMI diagnostic requirements not fulfilled).';
-        }
+      // Case B: Above 99th percentile → require BOTH 5 ng/L AND 20%
+      else {
+        dynamicChange = relDelta >= 20;
+        lines.push(
+          'UDMI Δ: ' + absDelta.toFixed(1) + ' ng/L (' +
+          relDelta.toFixed(1) + '%). Signifikant over 99‑percentil = Δ ≥5 ng/L & ≥20% ændring.'
+        );
       }
     }
 
-    msg.push(udmiText);
-    out.innerHTML = msg.join('<br>');
+  } else {
+    lines.push('UDMI Δ: Kun én værdi – kan ikke vurdere stigning/fald.');
   }
 
+  // ⭐ FINAL UDMI CLASSIFICATION
+  if (!above99) {
+    lines.push('<strong>UDMI:</strong> Ingen myokardieskade (alle værdier under ' + pct99 + ' ng/L).');
+  } else if (above99 && dynamicChange && ischemiaPresent) {
+    lines.push('<strong>UDMI:</strong> NSTEMI (stigning/fald + over 99‑percentil + iskæmi).');
+  } else if (above99 && dynamicChange && !ischemiaPresent) {
+    lines.push('<strong>UDMI:</strong> Akut myokardieskade (stigning/fald, ingen iskæmi).');
+  } else {
+    lines.push('<strong>UDMI:</strong> Kronisk myokardieskade (over 99‑percentil, ingen signifikant stigning/fald).');
+  }
+}
 
 
-
+    out.innerHTML = lines.join('<br>');
+  }
 </script>
 
 </body>
-
 </html>
-
